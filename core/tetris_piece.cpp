@@ -1,5 +1,5 @@
 #include "tetris_piece.hpp"
-#include "../rotatoinal_systems/rotation_system.hpp"
+#include "../rotation_systems/rotation_system.hpp"
 #include <algorithm>
 #include <stdexcept>
 #include <utility>
