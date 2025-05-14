@@ -26,8 +26,6 @@ bool Board::operator==(const Board& other) const {
 
   // Compare only the active part of the board by checking row by row
   for (std::int32_t y{0}; y < m_height; ++y) {
-    std::size_t rowStart{static_cast<std::size_t>(y * maxWidth)};
-
     // Compare only the cells within the width of the board
     for (std::int32_t x{0}; x < m_width; ++x) {
       if (isFilled(x, y) != other.isFilled(x, y)) {
@@ -46,7 +44,7 @@ bool Board::isFilled(std::int32_t x, std::int32_t y) const {
     return false;
   }
 
-  return m_cells.test(static_cast<std::size_t>(y * m_width + x));
+  return m_cells.test(y * m_width + x);
 }
 
 void Board::fillCell(std::int32_t x, std::int32_t y) {
@@ -82,7 +80,7 @@ void Board::clearCell(std::int32_t x, std::int32_t y) {
   }
 
   // Clear the bit for this cell
-  m_cells.reset(static_cast<std::size_t>(y * m_width + x));
+  m_cells.reset(y * m_width + x);
 
   // Decrement filled cell count
   --m_filledCellCount;
