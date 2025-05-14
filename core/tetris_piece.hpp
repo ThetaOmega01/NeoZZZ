@@ -48,7 +48,7 @@ constexpr Rotation rotateClockwise(Rotation rotation) {
  * @param rotation Current rotation state
  * @return Next rotation state
  */
-constexpr Rotation rotateAntiClockwise(Rotation rotation) {
+constexpr Rotation rotateCounterClockwise(Rotation rotation) {
   return static_cast<Rotation>((std::to_underlying(rotation) + 3) % 4);
 }
 
@@ -89,6 +89,11 @@ struct Position {
  */
 class PieceState {
 public:
+  /**
+   * @brief Default constructor
+   */
+  PieceState() = default;
+  
   /**
    * @brief Construct a piece state with given parameters
    *
@@ -183,6 +188,11 @@ public:
    * @brief Max size of a tetromino (4x4 grid)
    */
   static constexpr std::size_t maxSize{4};
+
+  /**
+   * @brief Default constructor
+   */
+  Piece() = default;
 
   /**
    * @brief Construct a piece with a given state

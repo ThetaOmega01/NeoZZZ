@@ -45,6 +45,15 @@ public:
   bool operator!=(const Board& other) const;
 
   /**
+   * @brief Check if a cell at the given coordinates is filled
+   *
+   * @param x X-coordinate (column)
+   * @param y Y-coordinate (row)
+   * @return true if the cell is filled, false otherwise
+   */
+  [[nodiscard]] bool isFilled(std::int32_t x, std::int32_t y) const;
+
+  /**
    * @brief Fill a cell at the given coordinates
    *
    * @param x X-coordinate (column)

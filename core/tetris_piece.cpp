@@ -22,7 +22,8 @@ void Piece::setState(const PieceState& state) {
   updateDimensions();
 }
 
-void Piece::setRotationSystem(const std::shared_ptr<RotationSystem>& rotationSystem) {
+void Piece::setRotationSystem(
+    const std::shared_ptr<RotationSystem>& rotationSystem) {
   [[unlikely]] if (!rotationSystem) {
     throw std::invalid_argument("Rotation system cannot be null");
   }

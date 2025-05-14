@@ -30,7 +30,7 @@ bool Board::operator==(const Board& other) const {
 
     // Compare only the cells within the width of the board
     for (std::int32_t x{0}; x < m_width; ++x) {
-      if (m_cells.test(rowStart + x) != other.m_cells.test(rowStart + x)) {
+      if (isFilled(x, y) != other.isFilled(x, y)) {
         return false;
       }
     }
@@ -41,6 +41,14 @@ bool Board::operator==(const Board& other) const {
 
 bool Board::operator!=(const Board& other) const { return !(*this == other); }
 
+bool Board::isFilled(std::int32_t x, std::int32_t y) const {
+  [[unlikely]] if (x < 0 || x >= m_width || y < 0 || y >= m_height) {
+    return false;
+  }
+
+  return m_cells.test(static_cast<std::size_t>(y * m_width + x));
+}
+
 void Board::fillCell(std::int32_t x, std::int32_t y) {
   [[unlikely]] if (x < 0 || x >= m_width || y < 0 || y >= m_height) { return; }
 
@@ -48,7 +56,7 @@ void Board::fillCell(std::int32_t x, std::int32_t y) {
   std::size_t bitPos{static_cast<std::size_t>(y * maxWidth + x)};
 
   // If the cell is already filled, do nothing
-  if (m_cells.test(bitPos)) {
+  if (isFilled(x, y)) {
     return;
   }
 
@@ -68,16 +76,13 @@ void Board::fillCell(std::int32_t x, std::int32_t y) {
 void Board::clearCell(std::int32_t x, std::int32_t y) {
   [[unlikely]] if (x < 0 || x >= m_width || y < 0 || y >= m_height) { return; }
 
-  // Calculate the bit position in the bitset
-  std::size_t bitPos{static_cast<std::size_t>(y * maxWidth + x)};
-
   // If the cell is already empty, do nothing
-  if (!m_cells.test(bitPos)) {
+  if (!isFilled(x, y)) {
     return;
   }
 
   // Clear the bit for this cell
-  m_cells.reset(bitPos);
+  m_cells.reset(static_cast<std::size_t>(y * m_width + x));
 
   // Decrement filled cell count
   --m_filledCellCount;
@@ -87,8 +92,7 @@ void Board::clearCell(std::int32_t x, std::int32_t y) {
     // Find the new height for this column
     std::int32_t newHeight{0};
     for (std::int32_t i{y - 1}; i >= 0; --i) {
-      std::size_t checkPos{static_cast<std::size_t>(i * maxWidth + x)};
-      if (m_cells.test(checkPos)) {
+      if (isFilled(x, i)) {
         newHeight = i + 1;
         break;
       }
@@ -116,25 +120,19 @@ std::int32_t Board::clearFilledRows() {
     if (isRowFilled(y)) {
       // This row is full, shift rows down by copying entire rows at once
       for (std::int32_t i{y}; i < m_height - 1; ++i) {
-        // Calculate start positions for current row and row above
-        std::size_t currentRowStart{static_cast<std::size_t>(i * maxWidth)};
-        std::size_t aboveRowStart{static_cast<std::size_t>((i + 1) * maxWidth)};
-
         // Copy entire row at once using a loop over just the width
         for (std::int32_t x{0}; x < m_width; ++x) {
-          if (m_cells.test(aboveRowStart + x)) {
-            m_cells.set(currentRowStart + x);
+          if (isFilled(x, i + 1)) {
+            fillCell(x, i);
           } else {
-            m_cells.reset(currentRowStart + x);
+            clearCell(x, i);
           }
         }
       }
 
       // Clear the top row
-      std::size_t topRowStart{
-          static_cast<std::size_t>((m_height - 1) * maxWidth)};
       for (std::int32_t x{0}; x < m_width; ++x) {
-        m_cells.reset(topRowStart + x);
+        clearCell(x, m_height - 1);
       }
 
       // Update counters
@@ -157,12 +155,9 @@ std::int32_t Board::clearFilledRows() {
 bool Board::isRowFilled(std::int32_t row) const {
   [[unlikely]] if (row < 0 || row >= m_height) { return false; }
 
-  // Calculate the start position for this row
-  std::size_t rowStart{static_cast<std::size_t>(row * maxWidth)};
-
   // Check each cell in the row directly
   for (std::int32_t x{0}; x < m_width; ++x) {
-    if (!m_cells.test(rowStart + x)) {
+    if (!isFilled(x, row)) {
       return false;
     }
   }
@@ -186,8 +181,7 @@ void Board::updateHeights() {
   for (std::int32_t x{0}; x < m_width; ++x) {
     m_columnHeights.at(x) = 0;
     for (std::int32_t y{m_height - 1}; y >= 0; --y) {
-      std::size_t bitPos{static_cast<std::size_t>(y * maxWidth + x)};
-      if (m_cells.test(bitPos)) {
+      if (isFilled(x, y)) {
         m_columnHeights.at(x) = y + 1;
         m_roof = std::max(m_roof, y + 1);
         break;
@@ -202,8 +196,7 @@ void Board::updateHeights(std::int32_t column) {
   // Recalculate the height just for this column
   m_columnHeights.at(column) = 0;
   for (std::int32_t y{m_height - 1}; y >= 0; --y) {
-    std::size_t bitPos{static_cast<std::size_t>(y * maxWidth + column)};
-    if (m_cells.test(bitPos)) {
+    if (isFilled(column, y)) {
       m_columnHeights.at(column) = y + 1;
       break;
     }

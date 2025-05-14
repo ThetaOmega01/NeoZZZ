@@ -119,7 +119,7 @@ public:
   [[nodiscard]] std::string toString() const;
 
 private:
-  MoveType m_type = MoveType::Down; ///< Type of move
+  MoveType m_type{MoveType::Down}; ///< Type of move
   std::int32_t m_wallKickIndex{-1}; ///< Wall kick index for rotation moves
 };
 } // namespace tetris
