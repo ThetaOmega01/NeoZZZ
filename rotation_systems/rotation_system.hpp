@@ -80,6 +80,13 @@ public:
    * @return true if 180-degree rotations are supported, false otherwise
    */
   [[nodiscard]] virtual bool supports180Rotation() const = 0;
+
+  /**
+   * @brief Create a deep copy of the rotation system
+   * 
+   * @return A shared pointer to a new rotation system instance
+   */
+  [[nodiscard]] virtual std::shared_ptr<RotationSystem> clone() const = 0;
 };
 
 } // namespace tetris

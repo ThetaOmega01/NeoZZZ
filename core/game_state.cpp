@@ -1,5 +1,7 @@
 #include "game_state.hpp"
 #include "move.hpp"
+
+#include <algorithm>
 #include <sstream>
 #include <stdexcept>
 
@@ -170,15 +172,19 @@ bool GameState::spawnPiece(PieceType type) {
   m_currentPiece = Piece(state, m_rotationSystem);
 
   // Check if the piece can be placed without collisions
-  for (const auto& cell : m_currentPiece.getAbsoluteFilledCells()) {
-    if (cell.xPos < 0 || cell.xPos >= m_board.getWidth() || cell.yPos < 0 ||
-        cell.yPos >= m_board.getHeight() ||
-        m_board.isFilled(cell.xPos, cell.yPos)) {
-      // Collision detected, game over
-      m_gameOver = true;
-      return false;
-    }
+  bool canPlace = std::ranges::all_of(m_currentPiece.getAbsoluteFilledCells(),
+      [this](const auto& cell) {
+          return cell.xPos >= 0 && cell.xPos < m_board.getWidth() &&
+                 cell.yPos >= 0 && cell.yPos < m_board.getHeight() &&
+                 !m_board.isFilled(cell.xPos, cell.yPos);
+      });
+
+  if (!canPlace) {
+    // Collision detected, game over
+    m_gameOver = true;
+    return false;
   }
+
 
   return true;
 }
@@ -268,15 +274,13 @@ std::string GameState::toString() const {
 }
 
 bool GameState::checkCollision() const {
-  for (const auto& cell : m_currentPiece.getAbsoluteFilledCells()) {
-    if (cell.xPos < 0 || cell.xPos >= m_board.getWidth() || cell.yPos < 0 ||
-        cell.yPos >= m_board.getHeight() ||
-        m_board.isFilled(cell.xPos, cell.yPos)) {
-      return true;
-    }
-  }
-
-  return false;
+  return std::ranges::any_of(m_currentPiece.getAbsoluteFilledCells(),
+    [this](const auto& cell) {
+      return cell.xPos < 0 || cell.xPos >= m_board.getWidth() ||
+             cell.yPos < 0 || cell.yPos >= m_board.getHeight() ||
+             m_board.isFilled(cell.xPos, cell.yPos);
+    });
 }
+
 
 } // namespace tetris
