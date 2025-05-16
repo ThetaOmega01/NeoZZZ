@@ -7,10 +7,10 @@
 
 namespace tetris {
 
-GameState::GameState(std::int32_t width, std::int32_t height)
+GameState::GameState(const int32_t width, const int32_t height)
     : m_board{width, height} {}
 
-GameState::GameState(std::int32_t width, std::int32_t height,
+GameState::GameState(const int32_t width, const int32_t height,
                      std::shared_ptr<RotationSystem> rotationSystem)
     : m_board{width, height}, m_rotationSystem{std::move(rotationSystem)} {
   // If we have a rotation system, make sure the current piece knows about it
@@ -45,12 +45,12 @@ bool GameState::applyMove(const Move& move) {
     // Apply wall kick if needed
     if (move.getWallKickIndex() >= 0 && m_rotationSystem) {
       // Get the wall kick data for this rotation
-      WallKickData wallKicks = m_rotationSystem->getClockwiseWallKicks(
+      const WallKickData wallKicks = m_rotationSystem->getClockwiseWallKicks(
           newState.getType(), rotateCounterClockwise(newState.getRotation()));
 
       // Apply the wall kick offset at the specified index
       if (move.getWallKickIndex() <
-          static_cast<std::int32_t>(wallKicks.getTestCount())) {
+          static_cast<int32_t>(wallKicks.getTestCount())) {
         const WallKickOffset& offset =
             wallKicks.getOffset(move.getWallKickIndex());
         newPos.xPos += offset.xOffset;
@@ -63,12 +63,12 @@ bool GameState::applyMove(const Move& move) {
     // Apply wall kick if needed
     if (move.getWallKickIndex() >= 0 && m_rotationSystem) {
       // Get the wall kick data for this rotation
-      WallKickData wallKicks = m_rotationSystem->getCounterClockwiseWallKicks(
+      const WallKickData wallKicks = m_rotationSystem->getCounterClockwiseWallKicks(
           newState.getType(), rotateClockwise(newState.getRotation()));
 
       // Apply the wall kick offset at the specified index
       if (move.getWallKickIndex() <
-          static_cast<std::int32_t>(wallKicks.getTestCount())) {
+          static_cast<int32_t>(wallKicks.getTestCount())) {
         const WallKickOffset& offset =
             wallKicks.getOffset(move.getWallKickIndex());
         newPos.xPos += offset.xOffset;
@@ -81,12 +81,12 @@ bool GameState::applyMove(const Move& move) {
     // Apply wall kick if needed
     if (move.getWallKickIndex() >= 0 && m_rotationSystem) {
       // Get the wall kick data for this rotation
-      WallKickData wallKicks = m_rotationSystem->get180WallKicks(
+      const WallKickData wallKicks = m_rotationSystem->get180WallKicks(
           newState.getType(), rotate180(newState.getRotation()));
 
       // Apply the wall kick offset at the specified index
       if (move.getWallKickIndex() <
-          static_cast<std::int32_t>(wallKicks.getTestCount())) {
+          static_cast<int32_t>(wallKicks.getTestCount())) {
         const WallKickOffset& offset =
             wallKicks.getOffset(move.getWallKickIndex());
         newPos.xPos += offset.xOffset;
@@ -115,21 +115,20 @@ bool GameState::applyMove(const Move& move) {
     return holdCurrentPiece();
   }
 
-  // After all the case handling in the switch statement
+  // After all, the case handling in the switch statement
   newState.setPosition(newPos);
 
   // Temporarily apply the new state to check validity
-  PieceState originalState{m_currentPiece.getState()}; // Save original state
+  const PieceState originalState{m_currentPiece.getState()}; // Save the original state
   m_currentPiece.setState(newState); // Apply new state for checking
 
   // Check validity with the temporarily applied state
   bool valid{true};
-  auto shapeData{m_currentPiece.getAbsoluteFilledCells()};
 
-  for (const auto& cell : shapeData) {
-    if (cell.xPos < 0 || cell.xPos >= m_board.getWidth() || cell.yPos < 0 ||
-        cell.yPos >= m_board.getHeight() ||
-        m_board.isFilled(cell.xPos, cell.yPos)) {
+  for (const auto& [xPos, yPos] : m_currentPiece.getAbsoluteFilledCells()) {
+    if (xPos < 0 || xPos >= m_board.getWidth() || yPos < 0 ||
+        yPos >= m_board.getHeight() ||
+        m_board.isFilled(xPos, yPos)) {
       valid = false;
       break;
     }
@@ -143,14 +142,14 @@ bool GameState::applyMove(const Move& move) {
   return valid;
 }
 
-std::int32_t GameState::lockCurrentPiece() {
+int32_t GameState::lockCurrentPiece() {
   // Add the piece to the board
-  for (const auto& cell : m_currentPiece.getAbsoluteFilledCells()) {
-    m_board.fillCell(cell.xPos, cell.yPos);
+  for (const auto& [xPos, yPos] : m_currentPiece.getAbsoluteFilledCells()) {
+    m_board.fillCell(xPos, yPos);
   }
 
   // Clear any filled rows
-  std::int32_t linesCleared{m_board.clearFilledRows()};
+  const int32_t linesCleared{m_board.clearFilledRows()};
   m_linesCleared += linesCleared;
 
   // Reset hold usage
@@ -159,20 +158,20 @@ std::int32_t GameState::lockCurrentPiece() {
   return linesCleared;
 }
 
-bool GameState::spawnPiece(PieceType type) {
+bool GameState::spawnPiece(const PieceType type) {
   if (!m_rotationSystem) {
     throw std::runtime_error("Rotation system not set");
   }
 
   // Use the rotation system to get the initial state
-  PieceState state{m_rotationSystem->getInitialState(type, m_board.getWidth(),
+  const PieceState state{m_rotationSystem->getInitialState(type, m_board.getWidth(),
                                                      m_board.getHeight())};
 
   // Create a new piece with the state and rotation system
   m_currentPiece = Piece(state, m_rotationSystem);
 
   // Check if the piece can be placed without collisions
-  bool canPlace = std::ranges::all_of(m_currentPiece.getAbsoluteFilledCells(),
+  const bool canPlace = std::ranges::all_of(m_currentPiece.getAbsoluteFilledCells(),
       [this](const auto& cell) {
           return cell.xPos >= 0 && cell.xPos < m_board.getWidth() &&
                  cell.yPos >= 0 && cell.yPos < m_board.getHeight() &&
@@ -194,7 +193,7 @@ bool GameState::spawnNextPiece() {
     return false;
   }
 
-  PieceType nextType{m_nextPieces.front()};
+  const PieceType nextType{m_nextPieces.front()};
   m_nextPieces.pop_front();
 
   return spawnPiece(nextType);
@@ -208,7 +207,7 @@ bool GameState::holdCurrentPiece() {
   PieceType currentType{m_currentPiece.getState().getType()};
 
   if (m_heldPiece.has_value()) {
-    // Swap current piece with held piece
+    // Swap current piece with the held piece
     PieceType heldType{m_heldPiece.value()};
     m_heldPiece = currentType;
 

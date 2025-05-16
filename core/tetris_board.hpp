@@ -115,7 +115,7 @@ public:
   std::int32_t clearFilledRows();
 
   /**
-   * @brief Check if a row is completely filled
+   * @brief Check if a row is filled
    *
    * @param row The row index
    * @return true if the row is filled, false otherwise
@@ -149,7 +149,6 @@ private:
    */
   void updateHeights(std::int32_t column);
 
-private:
   std::bitset<maxWidth * maxHeight>
       m_cells{}; ///< Bit representation of the board
   std::array<std::int32_t, maxWidth>

@@ -59,7 +59,6 @@ private:
    */
   static void initialize();
 
-private:
   std::unordered_map<std::string_view, std::unique_ptr<RotationSystem>>
       m_rotationSystems;
 };

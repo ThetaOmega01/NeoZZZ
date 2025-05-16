@@ -9,10 +9,12 @@ add_library(${PROJECT_NAME} SHARED)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/core)
+        ${CMAKE_CURRENT_SOURCE_DIR})
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core CORE_SRC)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rotation_systems ROT_SYS_SRC)
 
 target_sources(${PROJECT_NAME}
         PRIVATE
-        ${CORE_SRC})
+        ${CORE_SRC}
+        ${ROT_SYS_SRC})

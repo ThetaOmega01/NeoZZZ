@@ -4,28 +4,29 @@
 
 namespace tetris {
 
-WallKickData::WallKickData(std::initializer_list<WallKickOffset> offsets)
+WallKickData::WallKickData(const std::initializer_list<WallKickOffset> offsets)
     : m_offsets{offsets} {
   if (m_offsets.size() > maxWallKickTests) {
     throw std::invalid_argument("Too many wall kick tests");
   }
 }
 
-const WallKickOffset& WallKickData::getOffset(std::size_t index) const {
+const WallKickOffset& WallKickData::getOffset(const size_t index) const {
   if (index >= m_offsets.size()) {
     throw std::out_of_range("Wall kick index out of range");
   }
   return m_offsets.at(index);
 }
 
-Move::Move(MoveType type) : m_type{type}, m_wallKickIndex{-1} {}
+Move::Move(const MoveType type) : m_type{type} {}
 
-Move::Move(MoveType type, std::int32_t wallKickIndex)
-    : m_type{type}, m_wallKickIndex{wallKickIndex} {
-  if (!isRotation() && m_wallKickIndex >= 0) {
+Move::Move(const MoveType type, const int32_t wallKickIndex)
+    : m_type{type} {
+  if (!isRotation() && wallKickIndex >= 0) {
     throw std::invalid_argument(
         "Wall kick index only valid for rotation moves");
   }
+  m_wallKickIndex = wallKickIndex;
 }
 
 bool Move::isRotation() const {

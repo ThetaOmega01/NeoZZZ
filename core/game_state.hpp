@@ -19,7 +19,7 @@ public:
    * @param width Width of the board
    * @param height Height of the board
    */
-  GameState(std::int32_t width, std::int32_t height);
+  GameState(int32_t width, int32_t height);
 
   /**
    * @brief Construct a game state with the given board dimensions and rotation
@@ -29,7 +29,7 @@ public:
    * @param height Height of the board
    * @param rotationSystem The rotation system to use
    */
-  GameState(std::int32_t width, std::int32_t height,
+  GameState(int32_t width, int32_t height,
             std::shared_ptr<RotationSystem> rotationSystem);
 
   /**
@@ -83,7 +83,7 @@ public:
   /**
    * @brief Set the held piece type
    */
-  void setHeldPiece(std::optional<PieceType> type) { m_heldPiece = type; }
+  void setHeldPiece(const std::optional<PieceType> type) { m_heldPiece = type; }
 
   /**
    * @brief Check if hold has been used in the current turn
@@ -93,7 +93,7 @@ public:
   /**
    * @brief Set whether hold has been used in the current turn
    */
-  void setHoldUsed(bool used) { m_holdUsed = used; }
+  void setHoldUsed(const bool used) { m_holdUsed = used; }
 
   /**
    * @brief Get the next pieces in the queue
@@ -110,12 +110,12 @@ public:
   /**
    * @brief Get the number of lines cleared
    */
-  [[nodiscard]] std::int32_t getLinesCleared() const { return m_linesCleared; }
+  [[nodiscard]] int32_t getLinesCleared() const { return m_linesCleared; }
 
   /**
    * @brief Set the number of lines cleared
    */
-  void setLinesCleared(std::int32_t lines) { m_linesCleared = lines; }
+  void setLinesCleared(const int32_t lines) { m_linesCleared = lines; }
 
   /**
    * @brief Check if the game is over
@@ -125,7 +125,7 @@ public:
   /**
    * @brief Set whether the game is over
    */
-  void setGameOver(bool gameOver) { m_gameOver = gameOver; }
+  void setGameOver(const bool gameOver) { m_gameOver = gameOver; }
 
   /**
    * @brief Apply a move to the current piece
@@ -140,7 +140,7 @@ public:
    *
    * @return The number of lines cleared
    */
-  std::int32_t lockCurrentPiece();
+  int32_t lockCurrentPiece();
 
   /**
    * @brief Spawn a new piece
@@ -189,13 +189,12 @@ private:
    */
   [[nodiscard]] bool checkCollision() const;
 
-private:
   Board m_board;                        ///< The game board
   Piece m_currentPiece;                 ///< The current active piece
   std::optional<PieceType> m_heldPiece; ///< The held piece, if any
   bool m_holdUsed{false}; ///< Whether hold has been used in the current turn
   std::deque<PieceType> m_nextPieces; ///< Queue of upcoming pieces
-  std::int32_t m_linesCleared{0};     ///< Total number of lines cleared
+  int32_t m_linesCleared{0};     ///< Total number of lines cleared
   bool m_gameOver{false};             ///< Whether the game is over
   std::shared_ptr<RotationSystem>
       m_rotationSystem; ///< The rotation system to use

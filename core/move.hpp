@@ -9,19 +9,19 @@ namespace tetris {
 /**
  * @brief Maximum number of wall kick tests
  */
-constexpr std::int32_t maxWallKickTests = 16;
+constexpr int32_t maxWallKickTests = 16;
 
 /**
  * @brief Represents a wall kick offset
  */
 struct WallKickOffset {
-  std::int32_t xOffset{0};
-  std::int32_t yOffset{0};
+  int32_t xOffset{0};
+  int32_t yOffset{0};
 
   /**
    * @brief Construct a wall kick offset with given values
    */
-  WallKickOffset(std::int32_t x, std::int32_t y) : xOffset{x}, yOffset{y} {}
+  WallKickOffset(const int32_t x, const int32_t y) : xOffset{x}, yOffset{y} {}
 
   /**
    * @brief Convert to Position
@@ -42,12 +42,12 @@ public:
   /**
    * @brief Get the number of tests
    */
-  [[nodiscard]] std::size_t getTestCount() const { return m_offsets.size(); }
+  [[nodiscard]] size_t getTestCount() const { return m_offsets.size(); }
 
   /**
    * @brief Get the offset at the given index
    */
-  [[nodiscard]] const WallKickOffset& getOffset(std::size_t index) const;
+  [[nodiscard]] const WallKickOffset& getOffset(size_t index) const;
 
   /**
    * @brief Get all offsets
@@ -89,7 +89,7 @@ public:
   /**
    * @brief Construct a move with the given type and wall kick index
    */
-  Move(MoveType type, std::int32_t wallKickIndex);
+  Move(MoveType type, int32_t wallKickIndex);
 
   /**
    * @brief Get the move type
@@ -99,7 +99,7 @@ public:
   /**
    * @brief Get the wall kick index
    */
-  [[nodiscard]] std::int32_t getWallKickIndex() const {
+  [[nodiscard]] int32_t getWallKickIndex() const {
     return m_wallKickIndex;
   }
 
@@ -120,6 +120,6 @@ public:
 
 private:
   MoveType m_type{MoveType::Down}; ///< Type of move
-  std::int32_t m_wallKickIndex{-1}; ///< Wall kick index for rotation moves
+  int32_t m_wallKickIndex{-1}; ///< Wall kick index for rotation moves
 };
 } // namespace tetris

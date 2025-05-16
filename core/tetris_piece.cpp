@@ -48,12 +48,12 @@ std::vector<Position> Piece::getFilledCells() const {
 }
 
 std::vector<Position> Piece::getAbsoluteFilledCells() const {
-  std::vector<Position> absoluteFilledCells{getFilledCells()};
-  const Position& pos = m_state.getPosition();
+  std::vector absoluteFilledCells{getFilledCells()};
+  const auto& [currentXPos, currentYPos] = m_state.getPosition();
 
-  for (auto& cell : absoluteFilledCells) {
-    cell.xPos += pos.xPos;
-    cell.yPos += pos.yPos;
+  for (auto& [cellXPos, cellYPos] : absoluteFilledCells) {
+    cellXPos += currentXPos;
+    cellYPos += currentYPos;
   }
 
   return absoluteFilledCells;

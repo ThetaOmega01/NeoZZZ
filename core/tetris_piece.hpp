@@ -38,7 +38,7 @@ enum class Rotation {
  * @param rotation Current rotation state
  * @return Next rotation state
  */
-constexpr Rotation rotateClockwise(Rotation rotation) {
+constexpr Rotation rotateClockwise(const Rotation rotation) {
   return static_cast<Rotation>((std::to_underlying(rotation) + 1) % 4);
 }
 
@@ -48,7 +48,7 @@ constexpr Rotation rotateClockwise(Rotation rotation) {
  * @param rotation Current rotation state
  * @return Next rotation state
  */
-constexpr Rotation rotateCounterClockwise(Rotation rotation) {
+constexpr Rotation rotateCounterClockwise(const Rotation rotation) {
   return static_cast<Rotation>((std::to_underlying(rotation) + 3) % 4);
 }
 
@@ -58,7 +58,7 @@ constexpr Rotation rotateCounterClockwise(Rotation rotation) {
  * @param rotation Current rotation state
  * @return Next rotation state
  */
-constexpr Rotation rotate180(Rotation rotation) {
+constexpr Rotation rotate180(const Rotation rotation) {
   return static_cast<Rotation>((std::to_underlying(rotation) + 2) % 4);
 }
 
@@ -66,8 +66,8 @@ constexpr Rotation rotate180(Rotation rotation) {
  * @brief Represents a position on the board
  */
 struct Position {
-  std::int32_t xPos{};
-  std::int32_t yPos{};
+  int32_t xPos{};
+  int32_t yPos{};
 
   /**
    * @brief Equality operator
@@ -93,7 +93,7 @@ public:
    * @brief Default constructor
    */
   PieceState() = default;
-  
+
   /**
    * @brief Construct a piece state with given parameters
    *
@@ -101,7 +101,7 @@ public:
    * @param position Position on the board
    * @param rotation Rotation state
    */
-  PieceState(PieceType type, Position position, Rotation rotation)
+  PieceState(const PieceType type, const Position position, const Rotation rotation)
       : m_type{type}, m_position{position}, m_rotation{rotation} {}
 
   /**
@@ -122,17 +122,17 @@ public:
   /**
    * @brief Set the type of the tetromino
    */
-  void setType(PieceType type) { m_type = type; }
+  void setType(const PieceType type) { m_type = type; }
 
   /**
    * @brief Set the position of the tetromino
    */
-  void setPosition(Position position) { m_position = position; }
+  void setPosition(const Position position) { m_position = position; }
 
   /**
    * @brief Set the rotation state of the tetromino
    */
-  void setRotation(Rotation rotation) { m_rotation = rotation; }
+  void setRotation(const Rotation rotation) { m_rotation = rotation; }
 
   /**
    * @brief Equality operator
@@ -151,20 +151,20 @@ public:
      *
      * Uses the FNV-1a inspired algorithm similar to boost::hash_combine
      */
-    static inline void hash_combine(std::size_t& seed, std::size_t value) {
+    static void hash_combine(size_t& seed, const size_t value) {
       seed ^= value + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     }
 
-    std::size_t operator()(const PieceState& state) const {
-      std::size_t seed{0x9e3779b9};
+    size_t operator()(const PieceState& state) const {
+      size_t seed{0x9e3779b9};
 
       // Combine the hash of all components
-      hash_combine(seed, std::hash<std::int32_t>{}(
-                             static_cast<std::int32_t>(state.getType())));
-      hash_combine(seed, std::hash<std::int32_t>{}(state.getPosition().xPos));
-      hash_combine(seed, std::hash<std::int32_t>{}(state.getPosition().yPos));
-      hash_combine(seed, std::hash<std::int32_t>{}(
-                             static_cast<std::int32_t>(state.getRotation())));
+      hash_combine(seed, std::hash<int32_t>{}(
+                             static_cast<int32_t>(state.getType())));
+      hash_combine(seed, std::hash<int32_t>{}(state.getPosition().xPos));
+      hash_combine(seed, std::hash<int32_t>{}(state.getPosition().yPos));
+      hash_combine(seed, std::hash<int32_t>{}(
+                             static_cast<int32_t>(state.getRotation())));
 
       return seed;
     }
@@ -187,7 +187,7 @@ public:
   /**
    * @brief Max size of a tetromino (4x4 grid)
    */
-  static constexpr std::size_t maxSize{4};
+  static constexpr size_t maxSize{4};
 
   /**
    * @brief Default constructor
@@ -229,12 +229,12 @@ public:
   /**
    * @brief Get the width of the piece in its current rotation
    */
-  [[nodiscard]] std::int32_t getWidth() const { return m_width; }
+  [[nodiscard]] int32_t getWidth() const { return m_width; }
 
   /**
    * @brief Get the height of the piece in its current rotation
    */
-  [[nodiscard]] std::int32_t getHeight() const { return m_height; }
+  [[nodiscard]] int32_t getHeight() const { return m_height; }
 
   /**
    * @brief Get the shape data for the piece
@@ -248,7 +248,7 @@ public:
    *
    * Each value represents the height of a column in the piece.
    */
-  [[nodiscard]] const std::array<std::int32_t, maxSize>&
+  [[nodiscard]] const std::array<int32_t, maxSize>&
   getColumnHeights() const {
     return m_columnHeights;
   }
@@ -258,7 +258,7 @@ public:
    *
    * Each value represents the bottom position of a column in the piece.
    */
-  [[nodiscard]] const std::array<std::int32_t, maxSize>&
+  [[nodiscard]] const std::array<int32_t, maxSize>&
   getColumnBottoms() const {
     return m_columnBottoms;
   }
@@ -288,16 +288,15 @@ private:
    */
   void updateDimensions();
 
-private:
   PieceState m_state; ///< Current state of the piece
   std::shared_ptr<RotationSystem> m_rotationSystem; ///< Rotation systems
   std::bitset<maxSize * maxSize> m_shapeData{};     ///< Shape data for each row
-  std::array<std::int32_t, maxSize>
+  std::array<int32_t, maxSize>
       m_columnHeights{}; ///< Height of each column
-  std::array<std::int32_t, maxSize>
+  std::array<int32_t, maxSize>
       m_columnBottoms{};   ///< Bottom position of each column
-  std::int32_t m_width{};  ///< Width of the piece
-  std::int32_t m_height{}; ///< Height of the piece
+  int32_t m_width{};  ///< Width of the piece
+  int32_t m_height{}; ///< Height of the piece
 };
 
 } // namespace tetris

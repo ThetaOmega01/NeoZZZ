@@ -22,13 +22,13 @@ void RuleFactory::initialize() {
 }
 
 void RuleFactory::registerRotationSystem(
-    std::string_view name, std::unique_ptr<RotationSystem> system) {
+    const std::string_view name, std::unique_ptr<RotationSystem> system) {
   m_rotationSystems[name] = std::move(system);
 }
 
 std::shared_ptr<RotationSystem>
-RuleFactory::createRotationSystem(std::string_view name) const {
-  auto it = m_rotationSystems.find(name);
+RuleFactory::createRotationSystem(const std::string_view name) const {
+  const auto it = m_rotationSystems.find(name);
   if (it == m_rotationSystems.end()) {
     return nullptr;
   }
