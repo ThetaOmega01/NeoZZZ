@@ -3,6 +3,7 @@
 #include "tetris_piece.hpp"
 #include <cstdint>
 #include <vector>
+#include <string>
 
 namespace tetris {
 
@@ -21,12 +22,12 @@ struct WallKickOffset {
   /**
    * @brief Construct a wall kick offset with given values
    */
-  WallKickOffset(const int32_t x, const int32_t y) : xOffset{x}, yOffset{y} {}
+  constexpr WallKickOffset(const int32_t x, const int32_t y) : xOffset{x}, yOffset{y} {}
 
   /**
    * @brief Convert to Position
    */
-  [[nodiscard]] Position toPosition() const { return Position(xOffset, yOffset); }
+  [[nodiscard]] constexpr Position toPosition() const { return Position(xOffset, yOffset); }
 };
 
 /**

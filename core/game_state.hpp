@@ -5,11 +5,13 @@
 #include "tetris_piece.hpp"
 #include <deque>
 #include <optional>
+#include <memory>
+#include <string>
 
 namespace tetris {
 
 /**
- * @brief Represents the current state
+ * @brief Represents the current state of a Tetris game
  */
 class GameState {
 public:
@@ -134,6 +136,23 @@ public:
    * @return true if the move was successful, false otherwise
    */
   bool applyMove(const Move& move);
+
+  /**
+   * @brief Check if a piece state is valid (no collisions or out of bounds)
+   * 
+   * @param state The piece state to check
+   * @return true if the state is valid, false otherwise
+   */
+  [[nodiscard]] bool isValidState(const PieceState& state) const;
+
+  /**
+   * @brief Check if a piece at the given position would collide
+   * 
+   * @param state The piece state
+   * @param position The position to check
+   * @return true if there would be a collision, false otherwise
+   */
+  [[nodiscard]] bool checkCollision(const PieceState& state, const Position& position) const;
 
   /**
    * @brief Lock the current piece into the board
