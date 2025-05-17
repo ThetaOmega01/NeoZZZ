@@ -63,8 +63,9 @@ bool GameState::applyMove(const Move& move) {
     // Apply wall kick if needed
     if (move.getWallKickIndex() >= 0 && m_rotationSystem) {
       // Get the wall kick data for this rotation
-      const WallKickData& wallKicks = m_rotationSystem->getCounterClockwiseWallKicks(
-          newState.getType(), rotateClockwise(newState.getRotation()));
+      const WallKickData& wallKicks =
+          m_rotationSystem->getCounterClockwiseWallKicks(
+              newState.getType(), rotateClockwise(newState.getRotation()));
 
       // Apply the wall kick offset at the specified index
       if (move.getWallKickIndex() <
@@ -128,22 +129,23 @@ bool GameState::applyMove(const Move& move) {
 bool GameState::isValidState(const PieceState& state) const {
   // Create a temporary piece with the new state
   const Piece tempPiece(state, m_rotationSystem);
-  
-  // Check if any of the piece's cells are out of bounds or collide with the board
-  return std::ranges::all_of(tempPiece.getAbsoluteFilledCells(),
-    [this](const auto& cell) {
-      const auto& [xPos, yPos] = cell;
-      return xPos >= 0 && xPos < m_board.getWidth() && yPos >= 0 &&
-             yPos < m_board.getHeight() &&
-             !m_board.isFilled(xPos, yPos);
-    });
+
+  // Check if any of the piece's cells are out of bounds or collide with the
+  // board
+  return std::ranges::all_of(
+      tempPiece.getAbsoluteFilledCells(), [this](const auto& cell) {
+        const auto& [xPos, yPos] = cell;
+        return xPos >= 0 && xPos < m_board.getWidth() && yPos >= 0 &&
+               yPos < m_board.getHeight() && !m_board.isFilled(xPos, yPos);
+      });
 }
 
-bool GameState::checkCollision(const PieceState& state, const Position& position) const {
+bool GameState::checkCollision(const PieceState& state,
+                               const Position& position) const {
   // Create a temporary state with the given position
   PieceState tempState = state;
   tempState.setPosition(position);
-  
+
   return !isValidState(tempState);
 }
 
@@ -169,8 +171,8 @@ bool GameState::spawnPiece(const PieceType type) {
   }
 
   // Use the rotation system to get the initial state
-  const PieceState state{m_rotationSystem->getInitialState(type, m_board.getWidth(),
-                                                     m_board.getHeight())};
+  const PieceState state{m_rotationSystem->getInitialState(
+      type, m_board.getWidth(), m_board.getHeight())};
 
   // Create a new piece with the state and rotation system
   m_currentPiece = Piece(state, m_rotationSystem);
@@ -270,12 +272,12 @@ std::string GameState::toString() const {
 }
 
 bool GameState::checkCollision() const {
-  return std::ranges::any_of(m_currentPiece.getAbsoluteFilledCells(),
-    [this](const auto& cell) {
-      return cell.xPos < 0 || cell.xPos >= m_board.getWidth() ||
-             cell.yPos < 0 || cell.yPos >= m_board.getHeight() ||
-             m_board.isFilled(cell.xPos, cell.yPos);
-    });
+  return std::ranges::any_of(
+      m_currentPiece.getAbsoluteFilledCells(), [this](const auto& cell) {
+        return cell.xPos < 0 || cell.xPos >= m_board.getWidth() ||
+               cell.yPos < 0 || cell.yPos >= m_board.getHeight() ||
+               m_board.isFilled(cell.xPos, cell.yPos);
+      });
 }
 
 } // namespace tetris

@@ -37,15 +37,15 @@ RuleFactory::createRotationSystem(const std::string_view name) const {
 }
 
 std::vector<std::string_view> RuleFactory::getRegisteredSystemNames() const {
-    std::vector<std::string_view> names;
-    names.reserve(m_rotationSystems.size());
+  std::vector<std::string_view> names;
+  names.reserve(m_rotationSystems.size());
 
-    for (const auto& key : m_rotationSystems | std::views::keys) {
-        names.emplace_back(key);
-    }
+  for (const auto& key : m_rotationSystems | std::views::keys) {
+    names.emplace_back(key);
+  }
 
-    std::ranges::sort(names);
-    return names;
+  std::ranges::sort(names);
+  return names;
 }
 
 } // namespace tetris

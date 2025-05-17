@@ -4,8 +4,8 @@
 #include "tetris_board.hpp"
 #include "tetris_piece.hpp"
 #include <deque>
-#include <optional>
 #include <memory>
+#include <optional>
 #include <string>
 
 namespace tetris {
@@ -139,7 +139,7 @@ public:
 
   /**
    * @brief Check if a piece state is valid (no collisions or out of bounds)
-   * 
+   *
    * @param state The piece state to check
    * @return true if the state is valid, false otherwise
    */
@@ -147,12 +147,13 @@ public:
 
   /**
    * @brief Check if a piece at the given position would collide
-   * 
+   *
    * @param state The piece state
    * @param position The position to check
    * @return true if there would be a collision, false otherwise
    */
-  [[nodiscard]] bool checkCollision(const PieceState& state, const Position& position) const;
+  [[nodiscard]] bool checkCollision(const PieceState& state,
+                                    const Position& position) const;
 
   /**
    * @brief Lock the current piece into the board
@@ -213,7 +214,7 @@ private:
   std::optional<PieceType> m_heldPiece; ///< The held piece, if any
   bool m_holdUsed{false}; ///< Whether hold has been used in the current turn
   std::deque<PieceType> m_nextPieces; ///< Queue of upcoming pieces
-  int32_t m_linesCleared{0};     ///< Total number of lines cleared
+  int32_t m_linesCleared{0};          ///< Total number of lines cleared
   bool m_gameOver{false};             ///< Whether the game is over
   std::shared_ptr<RotationSystem>
       m_rotationSystem; ///< The rotation system to use

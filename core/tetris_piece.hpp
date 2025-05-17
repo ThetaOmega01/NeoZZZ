@@ -29,7 +29,7 @@ enum class Rotation {
   R0,   ///< Initial rotation (0 degree)
   R90,  ///< 90 degrees clockwise
   R180, ///< 180 degrees
-  R270  ///< 270 degrees clockwise (90 degrees anti-clockwise)
+  R270  ///< 270 degrees clockwise (90 degrees counterclockwise)
 };
 
 /**
@@ -43,7 +43,7 @@ constexpr Rotation rotateClockwise(const Rotation rotation) {
 }
 
 /**
- * @brief Get the next rotation state when rotating anti-clockwise
+ * @brief Get the next rotation state when rotating counterclockwise
  *
  * @param rotation Current rotation state
  * @return Next rotation state
@@ -101,7 +101,8 @@ public:
    * @param position Position on the board
    * @param rotation Rotation state
    */
-  PieceState(const PieceType type, const Position position, const Rotation rotation)
+  PieceState(const PieceType type, const Position position,
+             const Rotation rotation)
       : m_type{type}, m_position{position}, m_rotation{rotation} {}
 
   /**
@@ -159,8 +160,8 @@ public:
       size_t seed{0x9e3779b9};
 
       // Combine the hash of all components
-      hash_combine(seed, std::hash<int32_t>{}(
-                             static_cast<int32_t>(state.getType())));
+      hash_combine(seed,
+                   std::hash<int32_t>{}(static_cast<int32_t>(state.getType())));
       hash_combine(seed, std::hash<int32_t>{}(state.getPosition().xPos));
       hash_combine(seed, std::hash<int32_t>{}(state.getPosition().yPos));
       hash_combine(seed, std::hash<int32_t>{}(
@@ -248,8 +249,7 @@ public:
    *
    * Each value represents the height of a column in the piece.
    */
-  [[nodiscard]] const std::array<int32_t, maxSize>&
-  getColumnHeights() const {
+  [[nodiscard]] const std::array<int32_t, maxSize>& getColumnHeights() const {
     return m_columnHeights;
   }
 
@@ -258,8 +258,7 @@ public:
    *
    * Each value represents the bottom position of a column in the piece.
    */
-  [[nodiscard]] const std::array<int32_t, maxSize>&
-  getColumnBottoms() const {
+  [[nodiscard]] const std::array<int32_t, maxSize>& getColumnBottoms() const {
     return m_columnBottoms;
   }
 
@@ -291,12 +290,11 @@ private:
   PieceState m_state; ///< Current state of the piece
   std::shared_ptr<RotationSystem> m_rotationSystem; ///< Rotation systems
   std::bitset<maxSize * maxSize> m_shapeData{};     ///< Shape data for each row
+  std::array<int32_t, maxSize> m_columnHeights{};   ///< Height of each column
   std::array<int32_t, maxSize>
-      m_columnHeights{}; ///< Height of each column
-  std::array<int32_t, maxSize>
-      m_columnBottoms{};   ///< Bottom position of each column
-  int32_t m_width{};  ///< Width of the piece
-  int32_t m_height{}; ///< Height of the piece
+      m_columnBottoms{}; ///< Bottom position of each column
+  int32_t m_width{};     ///< Width of the piece
+  int32_t m_height{};    ///< Height of the piece
 };
 
 } // namespace tetris

@@ -20,8 +20,7 @@ const WallKickOffset& WallKickData::getOffset(const size_t index) const {
 
 Move::Move(const MoveType type) : m_type{type} {}
 
-Move::Move(const MoveType type, const int32_t wallKickIndex)
-    : m_type{type} {
+Move::Move(const MoveType type, const int32_t wallKickIndex) : m_type{type} {
   if (!isRotation() && wallKickIndex >= 0) {
     throw std::invalid_argument(
         "Wall kick index only valid for rotation moves");

@@ -2,8 +2,8 @@
 
 #include "tetris_piece.hpp"
 #include <cstdint>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace tetris {
 
@@ -22,12 +22,15 @@ struct WallKickOffset {
   /**
    * @brief Construct a wall kick offset with given values
    */
-  constexpr WallKickOffset(const int32_t x, const int32_t y) : xOffset{x}, yOffset{y} {}
+  constexpr WallKickOffset(const int32_t x, const int32_t y)
+      : xOffset{x}, yOffset{y} {}
 
   /**
    * @brief Convert to Position
    */
-  [[nodiscard]] constexpr Position toPosition() const { return Position(xOffset, yOffset); }
+  [[nodiscard]] constexpr Position toPosition() const {
+    return Position(xOffset, yOffset);
+  }
 };
 
 /**
@@ -35,6 +38,10 @@ struct WallKickOffset {
  */
 class WallKickData {
 public:
+  /**
+   * @brief Default constructor
+   */
+  WallKickData() = default;
   /**
    * @brief Construct with a list of offsets
    */
@@ -100,9 +107,7 @@ public:
   /**
    * @brief Get the wall kick index
    */
-  [[nodiscard]] int32_t getWallKickIndex() const {
-    return m_wallKickIndex;
-  }
+  [[nodiscard]] int32_t getWallKickIndex() const { return m_wallKickIndex; }
 
   /**
    * @brief Check if this is a rotation move
@@ -121,6 +126,6 @@ public:
 
 private:
   MoveType m_type{MoveType::Down}; ///< Type of move
-  int32_t m_wallKickIndex{-1}; ///< Wall kick index for rotation moves
+  int32_t m_wallKickIndex{-1};     ///< Wall kick index for rotation moves
 };
 } // namespace tetris

@@ -83,7 +83,7 @@ public:
 
   /**
    * @brief Create a deep copy of the rotation system
-   * 
+   *
    * @return A shared pointer to a new rotation system instance
    */
   [[nodiscard]] virtual std::shared_ptr<RotationSystem> clone() const = 0;
