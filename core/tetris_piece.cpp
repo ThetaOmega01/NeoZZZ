@@ -36,8 +36,8 @@ std::vector<Position> Piece::getFilledCells() const {
   std::vector<Position> filledCells;
   filledCells.reserve(4); // Tetrominoes have 4 cells
 
-  for (std::int32_t y{0}; y < m_height; ++y) {
-    for (std::int32_t x{0}; x < m_width; ++x) {
+  for (int32_t y{0}; y < m_height; ++y) {
+    for (int32_t x{0}; x < m_width; ++x) {
       if (m_shapeData.test(y * m_width + x)) {
         filledCells.emplace_back(x, y);
       }
@@ -77,10 +77,10 @@ void Piece::updateDimensions() {
   std::ranges::fill(m_columnBottoms, maxSize);
 
   // Find the actual dimensions of the piece
-  for (std::int32_t y{0}; y < static_cast<std::int32_t>(maxSize); ++y) {
+  for (int32_t y{0}; y < static_cast<int32_t>(maxSize); ++y) {
     bool rowHasFilledCells = false;
 
-    for (std::int32_t x{0}; x < static_cast<std::int32_t>(maxSize); ++x) {
+    for (int32_t x{0}; x < static_cast<int32_t>(maxSize); ++x) {
       if (m_shapeData.test(y * maxSize + x)) {
         rowHasFilledCells = true;
         m_width = std::max(m_width, x + 1);

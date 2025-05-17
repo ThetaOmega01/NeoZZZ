@@ -272,15 +272,15 @@ WallKickData SRS::get180WallKicks(PieceType, Rotation) const {
   return emptyWallKicksData;
 }
 
-PieceState SRS::getInitialState(PieceType type, const std::int32_t boardWidth,
-                                const std::int32_t boardHeight) const {
+PieceState SRS::getInitialState(PieceType type, const int32_t boardWidth,
+                                const int32_t boardHeight) const {
   // Calculate spawn position based on the SRS rules
   // Pieces spawn centered at the top of the board
-  const std::int32_t x = (boardWidth - 4) / 2;
+  const int32_t x = (boardWidth - 4) / 2;
 
   // In SRS, pieces spawn with their bottom at y=21 (0-indexed)
   // Adjust for the actual board height
-  const std::int32_t y = std::min(21, boardHeight - 1);
+  const int32_t y = std::min(21, boardHeight - 1);
 
   return {type, Position(x, y), Rotation::R0};
 }

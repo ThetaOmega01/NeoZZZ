@@ -154,7 +154,7 @@ bool Board::isRowFilled(const int32_t row) const {
   [[unlikely]] if (row < 0 || row >= m_height) { return false; }
 
   // Check each cell in the row directly
-  for (std::int32_t x{0}; x < m_width; ++x) {
+  for (int32_t x{0}; x < m_width; ++x) {
     if (!isFilled(x, row)) {
       return false;
     }
