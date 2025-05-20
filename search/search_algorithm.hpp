@@ -5,6 +5,7 @@
 #include "../core/tetris_piece.hpp"
 #include <cstdint>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace tetris {
@@ -24,7 +25,7 @@ public:
    *
    * @param piece The piece at the landing position
    */
-  explicit LandingPosition(const Piece& piece) : m_piece{piece} {}
+  explicit LandingPosition(Piece  piece) : m_piece{std::move(piece)} {}
 
   /**
    * @brief Get the piece at the landing position
@@ -144,7 +145,7 @@ public:
    */
   [[nodiscard]] virtual std::vector<LandingPosition>
   findLandingPositions(const GameState& gameState, const Piece& piece,
-                       size_t maxDepth = 0) const = 0;
+                       size_t maxDepth) const = 0;
 
   /**
    * @brief Find the path of moves to reach a landing position

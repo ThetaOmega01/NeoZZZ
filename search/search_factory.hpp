@@ -39,7 +39,7 @@ public:
    * @return Shared pointer to the created search algorithm, or nullptr if not
    * found
    */
-  [[nodiscard]] std::unique_ptr<SearchAlgorithm>
+  [[nodiscard]] std::shared_ptr<SearchAlgorithm>
   createSearchAlgorithm(std::string_view name) const;
 
   /**
@@ -59,7 +59,7 @@ private:
   /**
    * @brief Initialize the factory with built-in search algorithms
    */
-  static void initialize();
+  void initialize();
 
   std::unordered_map<std::string_view, std::unique_ptr<SearchAlgorithm>>
       m_searchAlgorithms;
