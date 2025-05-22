@@ -266,13 +266,15 @@ std::vector<Move> PathSearch::findPath(const GameState& gameState,
 
 bool PathSearch::canPlacePiece(const GameState& gameState,
                                const Piece& piece) const {
-  // Check if all the piece's cells are within bounds and not colliding with the board
-  return std::ranges::all_of(piece.getAbsoluteFilledCells(), [&gameState](const auto& cell) {
-    const auto& [xPos, yPos] = cell;
-    return xPos >= 0 && xPos < gameState.getBoard().getWidth() &&
-           yPos >= 0 && yPos < gameState.getBoard().getHeight() &&
-           !gameState.getBoard().isFilled(xPos, yPos);
-  });
+  // Check if all the piece's cells are within bounds and not colliding with the
+  // board
+  return std::ranges::all_of(
+      piece.getAbsoluteFilledCells(), [&gameState](const auto& cell) {
+        const auto& [xPos, yPos] = cell;
+        return xPos >= 0 && xPos < gameState.getBoard().getWidth() &&
+               yPos >= 0 && yPos < gameState.getBoard().getHeight() &&
+               !gameState.getBoard().isFilled(xPos, yPos);
+      });
 }
 
 std::vector<Move>

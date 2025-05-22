@@ -95,9 +95,7 @@ public:
    *
    * @return The count of filled cells
    */
-  [[nodiscard]] int32_t getFilledCellCount() const {
-    return m_filledCellCount;
-  }
+  [[nodiscard]] int32_t getFilledCellCount() const { return m_filledCellCount; }
 
   /**
    * @brief Get the height of the highest filled cell in a column
@@ -151,10 +149,9 @@ private:
 
   std::bitset<maxWidth * maxHeight>
       m_cells{}; ///< Bit representation of the board
-  std::array<int32_t, maxWidth>
-      m_columnHeights{};            ///< Height of each column
-  int32_t m_width{};           ///< Width of the board
-  int32_t m_height{};          ///< Height of the board
+  std::array<int32_t, maxWidth> m_columnHeights{}; ///< Height of each column
+  int32_t m_width{};                               ///< Width of the board
+  int32_t m_height{};                              ///< Height of the board
   int32_t m_roof{};            ///< Current highest filled cell
   int32_t m_filledCellCount{}; ///< Number of filled cells
 };

@@ -66,9 +66,8 @@ public:
    * @return The initial state for the piece
    * @throws std::invalid_argument if the piece type is invalid
    */
-  [[nodiscard]] PieceState
-  getInitialState(PieceType type, int32_t boardWidth,
-                  int32_t boardHeight) const override;
+  [[nodiscard]] PieceState getInitialState(PieceType type, int32_t boardWidth,
+                                           int32_t boardHeight) const override;
 
   /**
    * @brief Check if the rotation system supports 180-degree rotations

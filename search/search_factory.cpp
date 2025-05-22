@@ -33,7 +33,6 @@ SearchFactory::createSearchAlgorithm(const std::string_view name) const {
     return nullptr;
   }
 
-
   // Create a copy of the prototype
   if (name == "PathSearch") {
     return std::make_shared<PathSearch>(

@@ -177,47 +177,34 @@ constexpr ShapeData zShapeData = {{// Rotation 0 (spawn)
                                    ShapeDatum(0b0000010011001000)}};
 
 // J/L/S/T/Z Pieces
-const std::array<std::array<tetris::WallKickData, 4>, 2>
-    jlstzWallKickData = {
-        {// Clockwise rotation (0->R, R->2, 2->L, L->0)
-         {{tetris::WallKickData(
-               {{+0, +0}, {-1, +0}, {-1, +1}, {+0, -2}, {-1, -2}}),
-           tetris::WallKickData(
-               {{+0, +0}, {+1, +0}, {+1, -1}, {+0, +2}, {+1, +2}}),
-           tetris::WallKickData(
-               {{+0, +0}, {+1, +0}, {+1, +1}, {+0, -2}, {+1, -2}}),
-           tetris::WallKickData(
-               {{+0, +0}, {-1, +0}, {-1, -1}, {+0, +2}, {-1, +2}})}},
-         // Counterclockwise rotation (0->L, L->2, 2->R, R->0)
-         {{tetris::WallKickData(
-               {{+0, +0}, {+1, +0}, {+1, +1}, {+0, -2}, {+1, -2}}),
-           tetris::WallKickData(
-               {{+0, +0}, {+1, +0}, {+1, -1}, {+0, +2}, {+1, +2}}),
-           tetris::WallKickData(
-               {{+0, +0}, {-1, +0}, {-1, +1}, {+0, -2}, {-1, -2}}),
-           tetris::WallKickData(
-               {{+0, +0}, {-1, +0}, {-1, -1}, {+0, +2}, {-1, +2}})}}}};
+const std::array<std::array<tetris::WallKickData, 4>, 2> jlstzWallKickData = {
+    {// Clockwise rotation (0->R, R->2, 2->L, L->0)
+     {{tetris::WallKickData({{+0, +0}, {-1, +0}, {-1, +1}, {+0, -2}, {-1, -2}}),
+       tetris::WallKickData({{+0, +0}, {+1, +0}, {+1, -1}, {+0, +2}, {+1, +2}}),
+       tetris::WallKickData({{+0, +0}, {+1, +0}, {+1, +1}, {+0, -2}, {+1, -2}}),
+       tetris::WallKickData(
+           {{+0, +0}, {-1, +0}, {-1, -1}, {+0, +2}, {-1, +2}})}},
+     // Counterclockwise rotation (0->L, L->2, 2->R, R->0)
+     {{tetris::WallKickData({{+0, +0}, {+1, +0}, {+1, +1}, {+0, -2}, {+1, -2}}),
+       tetris::WallKickData({{+0, +0}, {+1, +0}, {+1, -1}, {+0, +2}, {+1, +2}}),
+       tetris::WallKickData({{+0, +0}, {-1, +0}, {-1, +1}, {+0, -2}, {-1, -2}}),
+       tetris::WallKickData(
+           {{+0, +0}, {-1, +0}, {-1, -1}, {+0, +2}, {-1, +2}})}}}};
 
 // I Piece
-const std::array<std::array<tetris::WallKickData, 4>, 2> iWallKickData =
-    {{// Clockwise rotation (0->R, R->2, 2->L, L->0)
-      {{tetris::WallKickData(
-            {{+0, +0}, {-2, +0}, {+1, +0}, {-2, -1}, {+1, +2}}),
-        tetris::WallKickData(
-            {{+0, +0}, {-1, +0}, {+2, +0}, {-1, +2}, {+2, -1}}),
-        tetris::WallKickData(
-            {{+0, +0}, {+2, +0}, {-1, +0}, {+2, +1}, {-1, -2}}),
-        tetris::WallKickData(
-            {{+0, +0}, {+1, +0}, {-2, +0}, {+1, -2}, {-2, +1}})}},
-      // Counterclockwise rotation (0->L, L->2, 2->R, R->0)
-      {{tetris::WallKickData(
-            {{+0, +0}, {-1, +0}, {+2, +0}, {-1, +2}, {+2, -1}}),
-        tetris::WallKickData(
-            {{+0, +0}, {+2, +0}, {-1, +0}, {+2, +1}, {-1, -2}}),
-        tetris::WallKickData(
-            {{+0, +0}, {+1, +0}, {-2, +0}, {+1, -2}, {-2, +1}}),
-        tetris::WallKickData(
-            {{+0, +0}, {-2, +0}, {+1, +0}, {-2, -1}, {+1, +2}})}}}};
+const std::array<std::array<tetris::WallKickData, 4>, 2> iWallKickData = {
+    {// Clockwise rotation (0->R, R->2, 2->L, L->0)
+     {{tetris::WallKickData({{+0, +0}, {-2, +0}, {+1, +0}, {-2, -1}, {+1, +2}}),
+       tetris::WallKickData({{+0, +0}, {-1, +0}, {+2, +0}, {-1, +2}, {+2, -1}}),
+       tetris::WallKickData({{+0, +0}, {+2, +0}, {-1, +0}, {+2, +1}, {-1, -2}}),
+       tetris::WallKickData(
+           {{+0, +0}, {+1, +0}, {-2, +0}, {+1, -2}, {-2, +1}})}},
+     // Counterclockwise rotation (0->L, L->2, 2->R, R->0)
+     {{tetris::WallKickData({{+0, +0}, {-1, +0}, {+2, +0}, {-1, +2}, {+2, -1}}),
+       tetris::WallKickData({{+0, +0}, {+2, +0}, {-1, +0}, {+2, +1}, {-1, -2}}),
+       tetris::WallKickData({{+0, +0}, {+1, +0}, {-2, +0}, {+1, -2}, {-2, +1}}),
+       tetris::WallKickData(
+           {{+0, +0}, {-2, +0}, {+1, +0}, {-2, -1}, {+1, +2}})}}}};
 
 // O Piece (and empty kicks)
 const tetris::WallKickData emptyWallKicksData({{+0, +0}});
