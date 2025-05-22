@@ -1,10 +1,8 @@
 #pragma once
 
 #include "search_algorithm.hpp"
-#include <queue>
-#include <utility>
-#include <unordered_set>
 #include <memory>
+#include <utility>
 
 namespace tetris {
 
@@ -117,7 +115,8 @@ private:
    * @param node The final search node
    * @return Vector of moves to reach the target
    */
-  [[nodiscard]] std::vector<Move> reconstructPath(const std::shared_ptr<SearchNode>& node) const;
+  [[nodiscard]] static std::vector<Move>
+  reconstructPath(std::shared_ptr<SearchNode>& node) ;
 
   /**
    * @brief Check if a move is valid in the current game state
@@ -133,14 +132,16 @@ private:
   /**
    * @brief Apply a move to a piece (helper method for search algorithm)
    *
-   * Note: This is different from GameState::applyMove as it doesn't modify the game state,
-   * but instead returns a new piece with the move applied.
+   * Note: This is different from GameState::applyMove as it doesn't modify the
+   * game state, but instead returns a new piece with the move applied.
    *
+   * @param gameState The current game state
    * @param piece The piece to move
    * @param move The move to apply
    * @return The resulting piece after the move
    */
-  [[nodiscard]] Piece applyMove(const Piece& piece, const Move& move) const;
+  [[nodiscard]] Piece applyMove(const GameState& gameState, const Piece& piece,
+                                const Move& move) const;
 
   /**
    * @brief Check if a piece is at a landing position
@@ -151,25 +152,6 @@ private:
    */
   [[nodiscard]] bool isAtLandingPosition(const GameState& gameState,
                                          const Piece& piece) const;
-
-  /**
-   * @brief Get all valid moves for a piece in the current game state
-   *
-   * @param gameState The current game state
-   * @param piece The piece to move
-   * @return Vector of valid moves
-   */
-  [[nodiscard]] std::vector<Move> getValidMoves(const GameState& gameState,
-                                              const Piece& piece) const;
-
-  /**
-   * @brief Type alias for the visited states set
-   *
-   * This set keeps track of piece states that have already been visited during the search
-   * to avoid cycles and improve performance. Uses custom hash and equality functions
-   * to properly identify unique piece states.
-   */
-  using VisitedSet = std::unordered_set<PieceState, PieceStateHash, PieceStateEqual>;
 };
 
 } // namespace tetris

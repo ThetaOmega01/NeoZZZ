@@ -13,8 +13,10 @@ target_include_directories(${PROJECT_NAME}
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core CORE_SRC)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rotation_systems ROT_SYS_SRC)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/search SEARCH_SRC)
 
 target_sources(${PROJECT_NAME}
         PRIVATE
         ${CORE_SRC}
-        ${ROT_SYS_SRC})
+        ${ROT_SYS_SRC}
+        ${SEARCH_SRC})
