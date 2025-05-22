@@ -25,7 +25,7 @@ public:
    *
    * @param piece The piece at the landing position
    */
-  explicit LandingPosition(Piece  piece) : m_piece{std::move(piece)} {}
+  explicit LandingPosition(Piece piece) : m_piece{std::move(piece)} {}
 
   /**
    * @brief Get the piece at the landing position
@@ -88,11 +88,11 @@ public:
   void setValid(bool valid) { m_valid = valid; }
 
 private:
-  Piece m_piece;              ///< The piece at the landing position
-  std::vector<Move> m_path;   ///< The path of moves to reach this position
-  int32_t m_tSpinType = 0;    ///< T-spin type (0=None, 1=T-Spin, 2=T-Spin Mini)
-  int32_t m_linesCleared = 0; ///< Number of lines that would be cleared
-  bool m_valid = true;        ///< Whether this is a valid landing position
+  Piece m_piece;             ///< The piece at the landing position
+  std::vector<Move> m_path;  ///< The path of moves to reach this position
+  int32_t m_tSpinType{0};    ///< T-spin type (0=None, 1=T-Spin, 2=T-Spin Mini)
+  int32_t m_linesCleared{0}; ///< Number of lines that would be cleared
+  bool m_valid{true};        ///< Whether this is a valid landing position
 };
 
 /**
@@ -108,12 +108,12 @@ public:
    * @brief Configuration options for search algorithms
    */
   struct Config {
-    bool allowRotate180 = false; ///< Allow 180-degree rotations
-    bool allowHardDrop = true;   ///< Allow hard drops
-    bool allowSoftDrop = true;   ///< Allow soft drops
-    bool is20G = false;          ///< Use 20G gravity
-    bool lastRotationOnly =
-        false; ///< Only consider positions with rotation as the last move
+    bool allowRotate180{false}; ///< Allow 180-degree rotations
+    bool allowHardDrop{true};   ///< Allow hard drops
+    bool allowSoftDrop{true};   ///< Allow soft drops
+    bool is20G{false};          ///< Use 20G gravity
+    bool lastRotationOnly{
+        false}; ///< Only consider positions with rotation as the last move
   };
 
   /**
