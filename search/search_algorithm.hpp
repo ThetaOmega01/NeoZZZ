@@ -4,7 +4,7 @@
 #include "../core/move.hpp"
 #include "../core/tetris_piece.hpp"
 #include <cstdint>
-#include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -126,7 +126,7 @@ public:
    *
    * @return The name of the search algorithm
    */
-  [[nodiscard]] virtual std::string getName() const = 0;
+  [[nodiscard]] virtual std::string_view getName() const = 0;
 
   /**
    * @brief Initialize the search algorithm
