@@ -2,7 +2,9 @@
 
 #include "search_algorithm.hpp"
 #include <memory>
+#include <string_view>
 #include <utility>
+using namespace std::string_view_literals;
 
 namespace tetris {
 
@@ -32,7 +34,9 @@ public:
    *
    * @return The name "PathSearch"
    */
-  [[nodiscard]] std::string getName() const override { return "PathSearch"; }
+  [[nodiscard]] std::string_view getName() const override {
+    return "PathSearch"sv;
+  }
 
   /**
    * @brief Initialize the search algorithm
@@ -116,7 +120,7 @@ private:
    * @return Vector of moves to reach the target
    */
   [[nodiscard]] static std::vector<Move>
-  reconstructPath(std::shared_ptr<SearchNode>& node) ;
+  reconstructPath(std::shared_ptr<SearchNode>& node);
 
   /**
    * @brief Check if a move is valid in the current game state
