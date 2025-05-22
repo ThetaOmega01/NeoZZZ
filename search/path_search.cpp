@@ -128,6 +128,7 @@ PathSearch::findLandingPositions(const GameState& gameState, const Piece& piece,
               break;
             default:
               miniTspin = false;
+              break;
             }
             if (miniTspin) {
               tSpinType = 2; // Mini T-Spin
