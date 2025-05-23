@@ -15,7 +15,7 @@ namespace tetris {
  * This class implements a breadth-first search algorithm to find paths
  * between piece positions on the board.
  */
-class PathSearch : public SearchAlgorithm {
+class PathSearch final : public SearchAlgorithm {
 public:
   /**
    * @brief Default constructor
@@ -90,9 +90,11 @@ private:
     Piece piece;
     Move lastMove;
     std::shared_ptr<SearchNode> parent;
+    size_t depth{0};
 
-    SearchNode(Piece p, const Move& m, std::shared_ptr<SearchNode> par)
-        : piece(std::move(p)), lastMove(m), parent(std::move(par)) {}
+    SearchNode(Piece p, const Move& m, std::shared_ptr<SearchNode> par,
+               const size_t d = 0)
+        : piece(std::move(p)), lastMove(m), parent(std::move(par)), depth(d) {}
   };
 
   /**
@@ -156,6 +158,35 @@ private:
    */
   [[nodiscard]] bool isAtLandingPosition(const GameState& gameState,
                                          const Piece& piece) const;
+
+  /**
+   * @brief Generate a vector of possible moves based on configuration
+   *
+   * @return Vector of possible moves
+   */
+  [[nodiscard]] std::vector<Move> generatePossibleMoves() const;
+
+  /**
+   * @brief Optimized implementation of hard drop
+   *
+   * @param gameState The current game state
+   * @param piece The piece to drop
+   * @return The resulting piece after hard drop
+   */
+  [[nodiscard]] Piece applyHardDrop(const GameState& gameState,
+                                   const Piece& piece) const;
+
+  /**
+   * @brief Detect if a T-piece placement results in a T-spin
+   *
+   * @param gameState The current game state
+   * @param piece The T-piece to check
+   * @param lastMoveWasRotation Whether the last move was a rotation
+   * @return T-spin type (0=None, 1=T-Spin, 2=T-Spin Mini)
+   */
+  [[nodiscard]] static int32_t detectTSpin(const GameState& gameState,
+                                   const Piece& piece,
+                                   bool lastMoveWasRotation) ;
 };
 
 } // namespace tetris
